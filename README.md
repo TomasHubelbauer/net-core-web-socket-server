@@ -16,4 +16,6 @@ an outgoing binary frame, the content appears to be empty and the length is
 mistakenly shown to be zero bytes. Incoming binary message is previewed
 correctly.
 
-- [ ] Find out why the outgoing message is not previewed correctly
+I posted [a Stack Overflow question](https://stackoverflow.com/q/56114835/2715716)
+inquiring about what could be the cause of the broken web socket frame display
+in Chrome developer tools.
