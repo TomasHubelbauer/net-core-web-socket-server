@@ -20,5 +20,4 @@ I posted [a Stack Overflow question](https://stackoverflow.com/q/56114835/271571
 inquiring about what could be the cause of the broken web socket frame display
 in Chrome developer tools.
 
-I made [a Chrome bug](https://bugs.chromium.org/p/chromium/issues/detail?id=962857)
-for this as well.
+I made [a Chrome bug](https://crbug.com/962857) for this as well.
