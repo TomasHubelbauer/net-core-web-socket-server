@@ -5,7 +5,8 @@ using System.Threading;
 var httpListener = new HttpListener();
 httpListener.Prefixes.Add("http://localhost:8000/");
 httpListener.Start();
-Console.WriteLine("http://localhost:8000/");
+
+Console.WriteLine(httpListener.Prefixes.Single());
 
 while (true)
 {
