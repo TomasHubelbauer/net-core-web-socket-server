@@ -25,7 +25,7 @@ while (true)
 
 async void HandleSocket(HttpListenerWebSocketContext context)
 {
-  while (true)
+  do
   {
     byte[] buffer = new byte[1024];
     var result = await context.WebSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
@@ -39,4 +39,5 @@ async void HandleSocket(HttpListenerWebSocketContext context)
       await context.WebSocket.SendAsync(new ArraySegment<byte>(buffer, 0, result.Count), result.MessageType, result.EndOfMessage, CancellationToken.None);
     }
   }
+  while (context.WebSocket.State == WebSocketState.Open);
 }

@@ -1,4 +1,5 @@
 const webSocket = new WebSocket("ws://localhost:8000");
+window.webSocket = webSocket;
 
 webSocket.addEventListener('open', () => {
   console.log('opened');
