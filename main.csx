@@ -13,40 +13,29 @@ while (true)
   if (context.Request.IsWebSocketRequest)
   {
     // Fire and forget to be able to accept more clients
-    var _ = Task.Run(async () =>
-    {
-      var socketContext = await context.AcceptWebSocketAsync(null);
-      var socket = socketContext.WebSocket;
-      while (true)
-      {
-        byte[] buffer = new byte[1024];
-        var result = await socket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
-        switch (result.MessageType)
-        {
-          case WebSocketMessageType.Close:
-            {
-              await socket.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, CancellationToken.None);
-              break;
-            }
-          case WebSocketMessageType.Text:
-            {
-              // Echo the input
-              await socket.SendAsync(new ArraySegment<byte>(buffer, 0, result.Count), WebSocketMessageType.Text, result.EndOfMessage, CancellationToken.None);
-              break;
-            }
-          case WebSocketMessageType.Binary:
-            {
-              // Echo the input
-              await socket.SendAsync(new ArraySegment<byte>(buffer, 0, result.Count), WebSocketMessageType.Binary, result.EndOfMessage, CancellationToken.None);
-              break;
-            }
-        }
-      }
-    });
+    HandleSocket(await context.AcceptWebSocketAsync(null));
   }
   else
   {
     context.Response.StatusCode = 400;
     context.Response.Close();
+  }
+}
+
+async void HandleSocket(HttpListenerWebSocketContext context)
+{
+  while (true)
+  {
+    byte[] buffer = new byte[1024];
+    var result = await context.WebSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+    if (result.MessageType == WebSocketMessageType.Close)
+    {
+      await context.WebSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, CancellationToken.None);
+    }
+    else
+    {
+      // Echo the input
+      await context.WebSocket.SendAsync(new ArraySegment<byte>(buffer, 0, result.Count), result.MessageType, result.EndOfMessage, CancellationToken.None);
+    }
   }
 }
