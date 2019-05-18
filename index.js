@@ -22,7 +22,13 @@ function pingText() {
   webSocket.send('TEXT');
 }
 
-function pingBinary() {
+function pingBinaryUint8Array() {
+  const uint8Array = new TextEncoder().encode('BINARY');
+  console.log('sent', uint8Array);
+  webSocket.send(uint8Array);
+}
+
+function pingBinaryBlob() {
   const blob = new Blob(['BINARY']);
   console.log('sent', blob);
   webSocket.send(blob);
